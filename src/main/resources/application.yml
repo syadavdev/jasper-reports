@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/jasper_report}
+    driver-class-name: ${DB_DRIVER_CLASS:com.mysql.cj.jdbc.Driver}
+    username: ${DB_USER:root}
+    password: ${DB_PASS:root}
+  jpa:
+    show-sql: true
+  jackson:
+    default-property-inclusion: NON_NULL
+    serialization:
+      write-dates-as-timestamps: false
+  flyway:
+    locations: classpath:/db/migration
+server:
+  port: 9005

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Customer_Report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8869e24c-90b6-4257-906f-ae9a899e2ddd">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Customer-Svc-Adapter-MySql"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="customerDetail" uuid="84cbc7e3-66a7-4806-acb8-9792980c8075">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Customer-Svc-Adapter-MySql"/>
+		<queryString language="SQL">
+			<![CDATA[select 
+customer_id as customerId,
+customer_name as customerName,
+phone_number as phoneNumber
+from customer]]>
+		</queryString>
+		<field name="customerId" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.label" value="customerId"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+		</field>
+		<field name="customerName" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="customerName"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+		</field>
+		<field name="phoneNumber" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="phoneNumber"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="customer"/>
+		</field>
+	</subDataset>
+	<parameter name="labels" class="java.util.Map"/>
+	<parameter name="reportName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 1]]>
+	</queryString>
+	<field name="1" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="1"/>
+	</field>
+	<title>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="130" y="0" width="320" height="30" uuid="ce67b5e7-069b-483d-8810-1aa66457840e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="130" height="30" uuid="c29e691c-01a1-40f2-8a07-0cb424f21475"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labels}.get("customer_id")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="0" width="130" height="30" uuid="ae50e07b-d070-4d76-a792-b7328ec1b837"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labels}.get("customer_name")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="130" height="30" uuid="ae0d89f3-ab1a-4f43-a49d-0502d0f5dda7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{labels}.get("phone_number")]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="550" height="30" uuid="3eb2e0cc-1e78-458b-8167-c2883d280f29"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="customerDetail" uuid="3b83943a-a2b3-4827-bbe1-3259336bd6e2">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="30" width="550">
+						<textField>
+							<reportElement x="0" y="0" width="130" height="30" uuid="1258e3f9-da25-4d2e-9ed6-121ffdbb593a"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{customerId}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="190" y="0" width="130" height="30" uuid="a38e8b85-0710-4212-a2ea-efa9ce21263d"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="380" y="0" width="130" height="30" uuid="767df9f1-3473-4a0d-8226-46dc379ae22d"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="11" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{phoneNumber}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>
