@@ -14,3 +14,15 @@ spring:
     locations: classpath:/db/migration
 server:
   port: 9005
+---
+spring:
+  profiles: test
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:users;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    driver-class-name: ${DB_DRIVER_CLASS:org.h2.Driver}
+    username: ${DB_USER:root}
+    password: ${DB_PASS:}
+  jpa:
+    show-sql: true
+  flyway:
+    locations: classpath:/db/migration

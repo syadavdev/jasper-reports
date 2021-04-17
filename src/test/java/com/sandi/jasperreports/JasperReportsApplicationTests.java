@@ -2,12 +2,14 @@ package com.sandi.jasperreports;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-class JasperReportsApplicationTests {
+@ActiveProfiles("test")
+public class JasperReportsApplicationTests {
 
 	@Test
-	void contextLoads() {
+	public void contextLoads() {
 	}
 
 }
