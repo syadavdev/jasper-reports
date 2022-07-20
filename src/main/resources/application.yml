@@ -14,6 +14,11 @@ spring:
     locations: classpath:/db/migration
 server:
   port: 9005
+jwt:
+  keystore-location: keystore.jks
+  keystore-password: password
+  key-alias: jwtsigning
+  private-key-passphrase: password
 ---
 spring:
   profiles: test

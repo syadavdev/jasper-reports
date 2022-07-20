@@ -1,4 +1,4 @@
-package com.sandi.jasperreports.controller.modal;
+package com.sandi.jasperreports.modal;
 
 import lombok.Getter;
 

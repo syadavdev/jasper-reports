@@ -1,7 +1,10 @@
 package com.sandi.jasperreports.controller;
 
-import com.sandi.jasperreports.controller.modal.ReportLabel;
-import com.sandi.jasperreports.controller.repository.ReportLabelRepository;
+import com.sandi.jasperreports.config.JwtHelper;
+import com.sandi.jasperreports.dto.LoginRequest;
+import com.sandi.jasperreports.dto.LoginResponse;
+import com.sandi.jasperreports.modal.ReportLabel;
+import com.sandi.jasperreports.repository.ReportLabelRepository;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -11,9 +14,18 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -32,10 +44,41 @@ import java.util.stream.Collectors;
 public class ReportController {
 
     private final ReportLabelRepository repository;
+    private final JwtHelper jwtHelper;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/report")
+    @PreAuthorize("hasAuthority('VIEW_REPORT')")
     public ResponseEntity<String> createReport() throws JRException, SQLException {
         return ResponseEntity.status(HttpStatus.OK).body(generateReport());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
+        UserDetails userDetails;
+        try{
+            userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        }catch(UsernameNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+
+        if(passwordEncoder.matches(request.getPassword(), userDetails.getPassword())){
+            Map<String, String> claims = new HashMap<>();
+            claims.put("username", request.getUsername());
+            List<String> authorities = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+
+            claims.put("authorities", authorities.toString());
+            claims.put("userId", String.valueOf(1));
+            String jwt = jwtHelper.createJwtForClaims(request.getUsername(), claims);
+            LoginResponse response = new LoginResponse();
+            response.setJwt(jwt);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     String generateReport() throws JRException, SQLException {
